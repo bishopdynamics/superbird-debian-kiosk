@@ -89,7 +89,7 @@ python3 superbird_tool.py --restore_device ~/Downloads/debian_v1.2_2023-12-19
          1. The Armbian Bookworm release did not work with USB burn mode, but works fine as a host just for networking
       2. [Radxa Rockpi S](pictures/superbird_landscape_back.jpg) ([with a PoE hat!](pictures/superbird_poe.jpg)), also with Armbian Jammy
       3. Raspberry Pi 4B, with Raspi OS Bookworm Lite
-   2. Copy and run `setup_host.sh` on the host device (as root), and reboot
+   2. Clone this repo on the host device, then run `setup_host.sh` (as root) and reboot
    3. Connect the Car Thing into the host device and power it up
 5. ssh to the host device, and then you should be able to ssh to the Car Thing (user and password are both `superbird`) :
 ```bash
