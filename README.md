@@ -148,6 +148,42 @@ ssh -p 2022 superbird@host-device
       13. generate new image for `logo` partition using [`files/logo/*.bmp`](files/logo)
 3.  You now have an image at `./dumps/debian_current/` ready to flash to device using [superbird-tool](https://github.com/bishopdynamics/superbird-tool)
 
+   ## Windows 11 + WSL2 + Docker Desktop Setup
+
+If you’re on Windows 11 using Docker Desktop backed by WSL2 (Ubuntu 24.04), you’ll need to register QEMU’s ARM64 handler so debootstrap can chroot into your new rootfs.
+
+1. **Install QEMU & binfmt in WSL**  
+   ```bash
+   sudo apt update
+   sudo apt install qemu-user-static binfmt-support docker.io
+   ```
+
+2. **Register the ARM64 interpreter**  
+   This runs inside the Docker/WSL2 VM and sets up `binfmt_misc` for ARM64 ELF:  
+   ```bash
+   docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+   ```
+
+3. **Verify the handler**  
+   ```bash
+   ls /proc/sys/fs/binfmt_misc/ | grep aarch64
+   # and ensure qemu-aarch64-static exists:
+   ls /usr/bin/qemu-aarch64-static
+   ```
+
+4. **Clean any old mounts**  
+   ```bash
+   sudo umount -l temp/data   2>/dev/null || true
+   sudo rm -rf temp
+   ```
+
+5. **Run your build**  
+   ```bash
+   sudo ./build_image.sh
+   ```
+
+That’s it—now your Ubuntu-in-WSL2 environment will transparently execute ARM64 binaries under QEMU during the debootstrap step.  
+
 
 Hint: Install `apt-cacher-ng` and then run `./build_image.sh --local_proxy` to use locally cached packages (avoid re-downloading packages every time, much faster)
 
