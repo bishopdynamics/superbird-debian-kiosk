@@ -20,7 +20,7 @@ PACKAGES="systemd systemd-sysv dbus kmod"
 # base packages
 PACKAGES="$PACKAGES usbutils htop nano tree file less locales sudo dialog apt"
 # stuff for networking
-PACKAGES="$PACKAGES wget curl iputils-ping iputils-tracepath iputils-arping iproute2 net-tools openssh-server ntp"
+PACKAGES="$PACKAGES wget curl iputils-ping iputils-tracepath iputils-arping iproute2 net-tools openssh-server ntpsec"
 # minimal xorg
 PACKAGES="$PACKAGES xserver-xorg-core xserver-xorg-video-fbdev xterm xinit x11-xserver-utils shared-mime-info"
 # xorg input
@@ -108,6 +108,7 @@ if [ ! -f "${EXISTING_DUMP}/settings.ext4" ]; then
     exit 1
 fi
 
+rm -rf "${TEMP_DIR}"
 mkdir -p ${TEMP_DIR}
 
 
