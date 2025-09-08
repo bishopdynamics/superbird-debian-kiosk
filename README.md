@@ -1,6 +1,6 @@
 # Wall Thing: Debian Chromium Kiosk on Spotify Car Thing (superbird)
 
-This is a prebuilt image of Debian 13 (Trixie) for the Spotify Car Thing, aka superbird.
+This is a prebuilt image of Debian 11 (Bullseye) for the Spotify Car Thing, aka superbird.
 It combines the stock kernel with a debian rootfs, and launches a fullscreen Chromium kiosk. I like to use it with Home Assistant.
 
 <img src="pictures/superbird_ha_portrait2.jpg" alt="Home Assistant on Car Thing" style="height: 300px;"/>
