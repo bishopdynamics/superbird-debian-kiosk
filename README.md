@@ -13,6 +13,8 @@ Default user and password are both `superbird`
 
 ![Latest Release](https://img.shields.io/github/v/release/bishopdynamics/superbird-debian-kiosk?logo=github)
 
+[Releases](https://github.com/bishopdynamics/superbird-debian-kiosk/releases)
+
 ## 3D Printed Case
 
 The case in the pictures [can be found in here](./Wallthing/).
