@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # update scripts and service files on a locally attached device
-#   will not overwrite any existing buttons_settings.py or chromium_settings.sh
+#   will not overwrite any existing buttons_settings.py or browser_settings.sh
 #   will not overwrite xorg.conf
 #   will not overwrite vnc_passwd
 #   this is intended to run on the host device, and expects key-based ssh authentication has already been setup with superbird
+# shellcheck disable=SC2029
 
 set -e
 
@@ -35,6 +36,7 @@ deploy_script_if_missing() {
     # deploy script only if it is missing
     #   does not change file mode, presumes new file is correct mode already
     SCR_NAME="$1"
+
     SCR_MISSING=$(ssh "${USER_NAME}@${HOST_NAME}" "if [ ! -f /scripts/$SCR_NAME ]; then echo missing; fi")
     if [ "$SCR_MISSING" == "missing" ]; then
         deploy_script "$SCR_NAME"
@@ -45,11 +47,7 @@ deploy_script_if_missing() {
 
 echo ""
 echo "Upgrading locally connected device"
-
 echo ""
-echo "Installing packages"
-# install packages, most of which should already be installed
-ssh "${USER_NAME}@${HOST_NAME}" "sudo apt update && sudo apt install -y --no-install-recommends --no-install-suggests chromium python3-minimal python3-pip tigervnc-scraping-server"
 
 # install required python packages via pip
 ssh "${USER_NAME}@${HOST_NAME}" "sudo chown -R ${USER_NAME} /scripts"
@@ -68,11 +66,11 @@ ssh "${USER_NAME}@${HOST_NAME}" "sudo mv /tmp/inittab /etc/inittab"
 scp "./files/data/etc/fstab" "${USER_NAME}@${HOST_NAME}":/tmp/fstab
 ssh "${USER_NAME}@${HOST_NAME}" "sudo mv /tmp/fstab /etc/fstab"
 
-# check if /dev/settings is mounted, if not then format settings, and mount it (restart chromium)
+# check if /dev/settings is mounted, if not then format settings, and mount it (restart browser)
 CFG_MISSING=$(ssh "${USER_NAME}@${HOST_NAME}" " mount |grep -q /dev/settings || echo missing")
 if [ "$CFG_MISSING" == "missing" ]; then
-    echo "Migrating chromium profile at /config to use settings partition"
-    ssh "${USER_NAME}@${HOST_NAME}" "sudo systemctl stop chromium"  # dont need to start it, will get restarted when re-deployed later
+    echo "Migrating browser profile at /config to use settings partition"
+    ssh "${USER_NAME}@${HOST_NAME}" "sudo systemctl stop browser"  # dont need to start it, will get restarted when re-deployed later
     ssh "${USER_NAME}@${HOST_NAME}" "sudo umount /config"  # just in case
     ssh "${USER_NAME}@${HOST_NAME}" "sudo rm -r /config"
     ssh "${USER_NAME}@${HOST_NAME}" "sudo mkfs.ext4 -F /dev/settings"
@@ -82,7 +80,7 @@ fi
 
 
 deploy_script_if_missing buttons_settings.py
-deploy_script_if_missing chromium_settings.sh
+deploy_script_if_missing browser_settings.sh
 deploy_script_if_missing vnc_passwd
 
 deploy_script buttons_app.py
@@ -92,7 +90,7 @@ deploy_script setup_display.sh
 deploy_script setup_usbgadget.sh
 deploy_script setup_vnc.sh
 deploy_script start_buttons.sh
-deploy_script start_chromium.sh
+deploy_script start_browser.sh
 
 
 echo ""
@@ -101,7 +99,7 @@ echo ""
 
 deploy_service backlight.service
 deploy_service buttons.service
-deploy_service chromium.service
+deploy_service browser.service
 deploy_service vnc.service
 
 

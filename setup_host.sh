@@ -3,6 +3,8 @@
 # setup a debian/ubuntu host machine to provide internet for USB device connected
 #   this should be run ONCE on the host machine
 
+set -e  # bail on any errors
+
 # all config lives in image_config.sh
 source ./image_config.sh
 
@@ -53,7 +55,7 @@ function forward_port() {
     iptables -A FORWARD -p tcp -d "${USBNET_PREFIX}.2" --dport "$DEST" -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 }
 
-set -e  # bail on any errors
+
 
 # install needed packages
 #   NOTE: the flag "--break-system-packages" only exists on recent debian/ubuntu versions,
@@ -86,7 +88,7 @@ mkdir -p /etc/iptables
 # clear all iptables rules
 iptables -F
 iptables -X
-iptables -Z 
+iptables -Z
 iptables -t nat -F
 iptables -t nat -X
 iptables -t mangle -F
@@ -123,8 +125,44 @@ iface usb0 inet static
 	netmask 255.255.255.0
 EOF
 
+# on newer operating systems, /etc/interfaces will be ignored in favor of netplan
+#   and the device is named enu1
+#   NOTE: I never got this working on Armbian 24.04 Noble, went back to Armbian Jammy
+# cat << EOF > /etc/netplan/99-usbnet.yaml
+# network:
+#   version: 2
+#   renderer: networkd
+#   ethernets:
+#     enu1:
+#       dhcp4: no
+#       addresses:
+#         - 192.168.7.1/24
+# EOF
+
 # add superbird to /etc/hosts
-append_if_missing "${USBNET_PREFIX}.2  ${HOST_NAME}"  "/etc/hosts"
+append_if_missing "${USBNET_PREFIX}.2  ${HOST_NAME}"  "/etc/hosts" || true
+
+echo "Setting up ssh key"
+# setup ssh key authentication between host & superbird
+
+mkdir -p "/home/${USER_NAME}/.ssh"
+chown "${USER_NAME}":"${USER_NAME}" "/home/${USER_NAME}/.ssh"
+
+echo "$SSH_KEY_PRIVATE" > "/home/${USER_NAME}/.ssh/id_rsa"
+echo "$SSH_KEY_PUBLIC" > "/home/${USER_NAME}/.ssh/id_rsa.pub"
+
+chown -R "${USER_NAME}":"${USER_NAME}" "/home/${USER_NAME}/.ssh"
+chmod 600 "/home/${USER_NAME}/.ssh/id_rsa"
+chmod 600 "/home/${USER_NAME}/.ssh/id_rsa.pub"
+
+cat << EOF > "/home/${USER_NAME}/.ssh/config"
+Host superbird
+    User superbird
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+EOF
+chown "${USER_NAME}":"${USER_NAME}" "/home/${USER_NAME}/.ssh/config"
+chmod 600 "/home/${USER_NAME}/.ssh/config"
 
 echo "Need to reboot for all changes to take effect"
 

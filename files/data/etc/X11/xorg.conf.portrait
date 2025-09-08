@@ -2,11 +2,11 @@
 # Portrait orientation (buttons on the right side)
 
 Section "ServerFlags"
-	Option		"BlankTime"		"10"
-	Option		"StandbyTime"	"10"
-	Option		"SuspendTime"	"10"
-	Option		"OffTime"		"10"
-	Option		"dpms"			"on"
+	Option		"BlankTime"		"0"
+	Option		"StandbyTime"	"0"
+	Option		"SuspendTime"	"0"
+	Option		"OffTime"		"0"
+	Option		"dpms"			"off"
 EndSection
 
 Section "ServerLayout"
@@ -40,7 +40,7 @@ EndSection
 
 Section "Monitor"
 	Identifier		"DefaultMonitor"
-	Option			"DPMS"		"on"
+	Option			"DPMS"		"off"
 EndSection
 
 # All the device buttons are part of event0, which appears as a keyboard

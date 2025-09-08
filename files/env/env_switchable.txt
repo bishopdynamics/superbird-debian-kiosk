@@ -22,7 +22,7 @@ recovery_part=recovery
 
 system_mode=1
 try_auto_burn=update 700 750;
-update=run usb_burning; 
+update=run usb_burning;
 upgrade_step=0
 usb_burning=update 1000
 wipe_cache=successful
@@ -45,7 +45,7 @@ initargs_debian=init=/usr/sbin/init ramoops.pstore_en=1 ramoops.record_size=0x80
 
 splash_boot=imgread pic logo bootup_spotify $loadaddr;bmp display $bootup_spotify_offset;bmp scale;run storeboot;
 bootargs_video=logo=osd0,loaded,0x1f800000 fb_width=480 fb_height=800 vout=panel,enable panel_type=lcd_8 frac_rate_policy=1 osd_reverse=0 video_reverse=0
-storeargs=setenv bootargs ${initargs} ${bootargs_video} reboot_mode_android=normal androidboot.selinux=${EnableSelinux} androidboot.firstboot=${firstboot} androidboot.hardware=amlogic irq_check_en=0 jtag=disable uboot_version=${gitver}; setenv avb2 0; if gpio input GPIOA_3; then run init_display_burn; run update; fi;
+storeargs=setenv bootargs ${initargs} ${bootargs_video} ipv6.disable=1 reboot_mode_android=normal androidboot.selinux=${EnableSelinux} androidboot.firstboot=${firstboot} androidboot.hardware=amlogic irq_check_en=0 jtag=disable uboot_version=${gitver}; setenv avb2 0; if gpio input GPIOA_3; then run init_display_burn; run update; fi;
 storeboot=boot_cooling;run storeargs;get_valid_slot;consume_boot_try;if imgread kernel ${boot_part} ${loadaddr}; then bootm ${loadaddr}; fi;run update;
 
 
