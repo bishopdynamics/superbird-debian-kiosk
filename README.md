@@ -16,6 +16,7 @@ Default user and password are both `superbird`
 ## 3D Printed Case
 
 The case in the pictures [can be found in here](./Wallthing/).
+![](./pictures/sketchup_models.png)
 
 ## Features
 
