@@ -104,8 +104,10 @@ python3 superbird_tool.py --restore_device ~/Downloads/debian_v1.2_2023-12-19
    ![Raspberry Pi OS Legacy (Bullseye) 64-Bit Lite](./pictures/raspberry_pi_os_legacy_bullseye_64bit_lite.png)
 
    2. NOTE: you MUST set user name to `superbird` in customization settings. The setup [scripts here](./image_config.sh) assume this username.
-      ![](./pictures/raspberry_pi_os_apply_os_customization.png)
-      ![](./pictures/raspberry_pi_os_customization.png)
+
+   ![](./pictures/raspberry_pi_os_apply_os_customization.png)
+   ![](./pictures/raspberry_pi_os_customization.png)
+
    3. insert microsd into the host device and power it on (without Car Thing)
    4. copy/paste [`prep_host.sh`](./prep_host.sh) to the host
    5. run `prep_host.sh` as root
