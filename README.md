@@ -147,7 +147,7 @@ ssh -p 2022 superbird@host-device
       2. Restart buttons script with: `sudo systemctl restart buttons.service`
    4. Edit `/etc/X11/xorg.conf` to adjust screen timeout (default 0), orientation (default portrait)
       1. for landscape, un-comment lines `38` and `71`
-   5. Edit `/scripts/setup_display.sh` and `/scripts/setup_backlight.sh` to adjust backlight brightness (default 100)
+   5. Edit `/scripts/setup_display.sh` and `/scripts/setup_backlight.sh` to adjust backlight brightness (default 100, 0 = full brightness, 255 = off)
       1. Restart backlight script with: `sudo systemctl restart backlight.service`
    6. Change vnc password: `sudo vncpasswd /scripts/vnc_passwd`
       1. Restart vnc server with: `sudo systemctl restart vnc.service`
