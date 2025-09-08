@@ -21,7 +21,7 @@ The case in the pictures [can be found in here](./Wallthing/).
 
 Working:
 
-- Debian 13 (Trixie) aarch64
+- Debian 11 (Bullseye) aarch64
 - Framebuffer display working with X11, in portrait or landscape, with touch input
 - Networking via USB RNDIS (requires a host device)
 - Automatic blacklight on/off with display wake/sleep
@@ -52,7 +52,7 @@ After installation, you will have 3 different boot options, depending on what bu
 
 - Debian Mode - default, no buttons held
 
-  - bootlogo says Debian Trixie
+  - bootlogo is blue Home Assistant icon
   - kernel is `boot_a` root is `data`
 
 - Utility Mode - hold button 1
